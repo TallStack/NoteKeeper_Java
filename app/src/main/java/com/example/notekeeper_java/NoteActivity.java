@@ -1,5 +1,6 @@
 package com.example.notekeeper_java;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -7,18 +8,20 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentActivity;
 
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.List;
 
 public class NoteActivity extends AppCompatActivity {
-
+    private NoteInfo note;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,9 @@ public class NoteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

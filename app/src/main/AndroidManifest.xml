@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".NoteActivity"
+            android:name=".NoteListActivity"
             android:label="NoteKeeper Java"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -18,6 +18,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".NoteActivity"
+            android:label="Edit Note"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
     </application>
 

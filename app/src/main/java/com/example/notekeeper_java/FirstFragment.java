@@ -1,10 +1,12 @@
 package com.example.notekeeper_java;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.List;
@@ -14,7 +16,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 public class FirstFragment extends Fragment {
-
+    public static final String NOTE_POSITION = "com.example.NoteKeeper_Java.NOTE_POSITION";
+    public static final int POSITION_NOT_SET = -1;
+    private NoteInfo note;
+    boolean isNewNote;
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -35,6 +40,14 @@ public class FirstFragment extends Fragment {
         Spinner spinnerCourses = view.findViewById(R.id.spinner_courses);
         spinnerCourses.setAdapter(adapterCourses);
 
+        readDisplayStateValues();
+
+        EditText noteTitle = view.findViewById(R.id.txtNoteTitle);
+        EditText noteText = view.findViewById(R.id.txtNoteText);
+
+        if(!isNewNote)
+        displayNote(spinnerCourses,noteTitle,noteText);
+        
         view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,4 +56,24 @@ public class FirstFragment extends Fragment {
             }
         });
     }
+    private void displayNote(Spinner spinnerCourses, EditText txtNoteTitle, EditText txtNoteText) {
+        List<CourseInfo> courses = DataManager.getInstance().getCourses();
+
+        int CourseIndex = courses.indexOf(note.getCourse());
+        spinnerCourses.setSelection(CourseIndex);
+        txtNoteTitle.setText(note.getText());
+        txtNoteText.setText(note.getText());
+    }
+
+    private void readDisplayStateValues()
+    {
+        Intent intent = getActivity().getIntent();
+        int position = intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET);
+        isNewNote = position == POSITION_NOT_SET;
+        if(!isNewNote)
+            note = DataManager.getInstance().getNotes().get(position);
+    }
+
+
+
 }
