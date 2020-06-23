@@ -3,22 +3,13 @@ package com.example.notekeeper_java;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentActivity;
-
-import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-
-import java.util.List;
 
 public class NoteActivity extends AppCompatActivity {
     private NoteInfo note;
@@ -49,10 +40,26 @@ public class NoteActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_send_email) {
+            sendEmail();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sendEmail() {
+        Spinner spinnerCourses = findViewById(R.id.spinner_courses);
+
+        EditText noteTitle = findViewById(R.id.txtNoteTitle);
+        EditText noteText = findViewById(R.id.txtNoteText);
+        CourseInfo course = (CourseInfo)spinnerCourses.getSelectedItem();
+        String subject = noteTitle.getText().toString();
+        String text = "Check out the course I'm studying on Pluralsight \"" + course.getTitle() + "\"\n" + noteText.getText();
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc2022");
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        startActivity(intent);
     }
 }
