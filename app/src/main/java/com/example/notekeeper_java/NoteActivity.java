@@ -50,7 +50,7 @@ public class NoteActivity extends AppCompatActivity {
 
     private void sendEmail() {
         Spinner spinnerCourses = findViewById(R.id.spinner_courses);
-
+        //DataManager dm = new DataManager().getInstance();
         EditText noteTitle = findViewById(R.id.txtNoteTitle);
         EditText noteText = findViewById(R.id.txtNoteText);
         CourseInfo course = (CourseInfo)spinnerCourses.getSelectedItem();

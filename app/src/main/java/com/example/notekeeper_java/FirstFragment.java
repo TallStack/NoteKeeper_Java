@@ -20,6 +20,9 @@ public class FirstFragment extends Fragment {
     public static final int POSITION_NOT_SET = -1;
     private NoteInfo note;
     boolean isNewNote;
+    Spinner spinnerCourses;
+    EditText noteTitle;
+    EditText noteText;
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -37,16 +40,20 @@ public class FirstFragment extends Fragment {
                 this.requireActivity(),android.R.layout.simple_spinner_item, courses
         );
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner spinnerCourses = view.findViewById(R.id.spinner_courses);
+        spinnerCourses = view.findViewById(R.id.spinner_courses);
         spinnerCourses.setAdapter(adapterCourses);
 
         readDisplayStateValues();
 
-        EditText noteTitle = view.findViewById(R.id.txtNoteTitle);
-        EditText noteText = view.findViewById(R.id.txtNoteText);
+        noteTitle = view.findViewById(R.id.txtNoteTitle);
+        noteText = view.findViewById(R.id.txtNoteText);
 
-        if(!isNewNote)
-        displayNote(spinnerCourses,noteTitle,noteText);
+        if(isNewNote) {
+            createNewNote();
+        }
+        else {
+            displayNote(spinnerCourses, noteTitle, noteText);
+        }
         
         view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,12 +63,19 @@ public class FirstFragment extends Fragment {
             }
         });
     }
+
+    private void createNewNote() {
+        DataManager dm = DataManager.getInstance();
+        int notePosition = dm.createNewNote();
+        note = dm.getNotes().get(notePosition);
+    }
+
     private void displayNote(Spinner spinnerCourses, EditText txtNoteTitle, EditText txtNoteText) {
         List<CourseInfo> courses = DataManager.getInstance().getCourses();
 
         int CourseIndex = courses.indexOf(note.getCourse());
         spinnerCourses.setSelection(CourseIndex);
-        txtNoteTitle.setText(note.getText());
+        txtNoteTitle.setText(note.getTitle());
         txtNoteText.setText(note.getText());
     }
 
@@ -75,5 +89,15 @@ public class FirstFragment extends Fragment {
     }
 
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        saveNote();
+    }
 
+    private void saveNote() {
+        note.setCourse((CourseInfo)spinnerCourses.getSelectedItem());
+        note.setTitle(noteTitle.getText().toString());
+        note.setText(noteText.getText().toString());
+    }
 }
