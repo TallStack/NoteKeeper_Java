@@ -13,6 +13,7 @@ import android.widget.Spinner;
 
 public class NoteActivity extends AppCompatActivity {
     private NoteInfo note;
+    static boolean isCancelling;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +44,10 @@ public class NoteActivity extends AppCompatActivity {
         if (id == R.id.action_send_email) {
             sendEmail();
             return true;
+        } else if (id == R.id.action_cancel)
+        {
+            isCancelling = true;
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
